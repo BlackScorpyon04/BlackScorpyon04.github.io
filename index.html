@@ -1,117 +1,828 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Scorp</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/utilities.css">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Scorp | Java Developer</title>
-</head>
+<style>
+/* ─── Tokens ─── */
+:root {
+  --bg:        #f0eeea;
+  --bg2:       #e8e5e0;
+  --surface:   #ffffff;
+  --border:    #d8d4ce;
+  --text:      #1a1a2e;
+  --text-2:    #5c5c78;
+  --text-3:    #9896a8;
+  --accent:    #2b6cb0;
+  --accent-2:  #1a4a80;
+  --tag-bg:    #e2eaf4;
+  --tag-text:  #2b5a9e;
+  --badge-bg:  #fff3cd;
+  --badge-text:#7d5a00;
+  --card-bg:   #ffffff;
+  --shadow:    0 2px 12px rgba(0,0,0,0.08);
+  color-scheme: light;
+}
 
-<body>
-    <!-- Navbar -->
-    <div class="navbar">
-        <div class="container flex">
-            <h1 class="logo">Scorp</h1>
-        </div>
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:        #0e0e1a;
+    --bg2:       #141425;
+    --surface:   #1a1a2e;
+    --border:    #2a2a45;
+    --text:      #e8e6f0;
+    --text-2:    #9896b8;
+    --text-3:    #5c5a78;
+    --accent:    #60a5fa;
+    --accent-2:  #93c5fd;
+    --tag-bg:    #1e2a40;
+    --tag-text:  #60a5fa;
+    --badge-bg:  #2d2510;
+    --badge-text:#fbbf24;
+    --card-bg:   #1a1a2e;
+    --shadow:    0 2px 12px rgba(0,0,0,0.4);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:        #0e0e1a;
+  --bg2:       #141425;
+  --surface:   #1a1a2e;
+  --border:    #2a2a45;
+  --text:      #e8e6f0;
+  --text-2:    #9896b8;
+  --text-3:    #5c5a78;
+  --accent:    #60a5fa;
+  --accent-2:  #93c5fd;
+  --tag-bg:    #1e2a40;
+  --tag-text:  #60a5fa;
+  --badge-bg:  #2d2510;
+  --badge-text:#fbbf24;
+  --card-bg:   #1a1a2e;
+  --shadow:    0 2px 12px rgba(0,0,0,0.4);
+  color-scheme: dark;
+}
+
+/* ─── Reset + Base ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  padding-inline: 0;
+  padding-block: 0;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+
+/* ─── Typography Scale ─── */
+.font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
+
+/* ─── Nav ─── */
+nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(1rem, 5vw, 3rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-2);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* ─── Hero ─── */
+.hero {
+  padding: 5rem clamp(1rem, 5vw, 3rem) 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero-eyebrow {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.hero-name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(3rem, 9vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  text-wrap: balance;
+  margin-bottom: 1.5rem;
+}
+
+.hero-name .accent-dot { color: var(--accent); }
+
+.hero-bio {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--text-2);
+  max-width: 60ch;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 1.4rem;
+  border-radius: 6px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-primary:hover {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ─── Skills ─── */
+.skills-section {
+  padding: 0 clamp(1rem, 5vw, 3rem) 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  letter-spacing: 0.01em;
+}
+
+/* ─── Divider ─── */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 clamp(1rem, 5vw, 3rem) 3rem;
+  max-width: calc(900px - clamp(2rem, 10vw, 6rem));
+  margin-inline: auto;
+}
+
+/* ─── Projects Section ─── */
+.projects-section {
+  padding: 0 clamp(1rem, 5vw, 3rem) 5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.section-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Featured Card ─── */
+.featured-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+  display: block;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.featured-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.featured-card-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.featured-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--badge-text);
+  background: var(--badge-bg);
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+.featured-badge::before {
+  content: "★";
+  font-size: 0.65rem;
+}
+
+.featured-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.featured-desc {
+  font-size: 0.9rem;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+
+.download-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.download-stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--text-3);
+  letter-spacing: 0;
+}
+
+.card-footer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ─── Project Grid ─── */
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.project-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.project-card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+  border-color: var(--accent);
+}
+
+.project-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--tag-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.project-link-icon {
+  color: var(--text-3);
+  font-size: 0.9rem;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+.project-card:hover .project-link-icon { color: var(--accent); }
+
+.project-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.project-desc {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* ─── About ─── */
+.about-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 4rem clamp(1rem, 5vw, 3rem);
+}
+
+.about-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.about-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  line-height: 1.15;
+}
+
+.about-text {
+  font-size: 0.95rem;
+  color: var(--text-2);
+  line-height: 1.8;
+}
+
+.about-text p + p { margin-top: 1rem; }
+
+.about-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+.about-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+.about-detail .icon { color: var(--accent); font-size: 0.9rem; }
+
+/* ─── Footer ─── */
+footer {
+  padding: 2rem clamp(1rem, 5vw, 3rem);
+  border-top: 1px solid var(--border);
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+.footer-brand span { color: var(--accent); }
+
+.footer-copy {
+  font-size: 0.8rem;
+  color: var(--text-3);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.25rem;
+}
+.footer-links a {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+
+/* ─── Responsive ─── */
+@media (max-width: 680px) {
+  .nav-links { display: none; }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .hero-stats {
+    gap: 1.5rem;
+  }
+
+  footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+
+<!-- Nav -->
+<nav>
+  <span class="nav-logo font-display">Scorp<span>.</span></span>
+  <ul class="nav-links">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://github.com/blackscorpyon04" target="_blank" rel="noopener">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <p class="hero-eyebrow">Java Developer · Victoria, Australia</p>
+  <h1 class="hero-name font-display">Minecraft<br>Plugin Dev<span class="accent-dot">.</span></h1>
+  <p class="hero-bio">
+    I build Minecraft plugins that people actually use — 38,000+ downloads across my plugins. Self-taught Java developer with 7 years in the Paper / Folia ecosystem, open for commissions.
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-value font-display">38k+</span>
+      <span class="stat-label">Plugin Downloads</span>
     </div>
+    <div class="stat">
+      <span class="stat-value font-display">7</span>
+      <span class="stat-label">Years Java Dev</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value font-display">8+</span>
+      <span class="stat-label">Published Plugins</span>
+    </div>
+  </div>
 
-    <!-- About me -->
-    <section class="aboutme">
-        <div class="container flex">
-            <div class="aboutme-text">
-                <h1>About me</h1>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo sunt quos, perspiciatis quisquam corrupti magni officiis ex laboriosam, accusamus, dolor explicabo. Ad laboriosam inventore non obcaecati fugiat sequi architecto nesciunt.</p>
-            </div>
-        </div>
-    </section>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="https://github.com/blackscorpyon04" target="_blank" rel="noopener" class="btn btn-outline">GitHub ↗</a>
+  </div>
+</header>
 
-    <!-- Projects -->
-    <section class="projects">
-        <div class="container">
-            <h1 class="projects-heading text-center my-1">
-                Projects
-                </h3>
-                <div class="grid grid-3 text-center my-4">
-                    <a href="https://dev.bukkit.org/projects/simple-player-tracker" class="card">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3>
-                                    Simple Player Tracker
-                                </h3>
-                                <p>
-                                    Compass tracking plugin
-                                </p>
-                            </div>
-                        </div>
-                        <img src="images/simpleplayertracker.png">
-                    </a>
-                    <a href="https://dev.bukkit.org/projects/simple-healing" class="card">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3>
-                                    Simple Healing
-                                </h3>
-                                <p>
-                                    Healing items plugin
-                                </p>
-                            </div>
-                        </div>
-                        <img src="images/simplehealing.png">
-                    </a>
-                    <a href="https://dev.bukkit.org/projects/potionattack" class="card">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3>
-                                    Potion Attack
-                                </h3>
-                                <p>
-                                    Adds potion effects to gear
-                                </p>
-                            </div>
-                        </div>
-                        <img src="images/potionattack.png">
-                    </a>
-                    <a href="https://dev.bukkit.org/projects/planks-from-logs" class="card">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3>
-                                    Planks from logs
-                                </h3>
-                                <p>
-                                    Make planks drop from logs
-                                </p>
-                            </div>
-                        </div>
-                        <img src="images/planksfromlogs.png">
-                    </a>
-                    <a href="https://dev.bukkit.org/projects/blockcannon" class="card">
-                        <div class="caption">
-                            <div class="caption-content">
-                                <h3>
-                                    Block Cannon
-                                </h3>
-                                <p>
-                                    Adds a handheld cannon that shoots blocks
-                                </p>
-                            </div>
-                        </div>
-                        <img src="images/blockcannon.png">
-                    </a>
-                </div>
-        </div>
-    </section>
+<!-- Skills -->
+<section class="skills-section">
+  <p class="section-label">Skills &amp; Stack</p>
+  <div class="tags">
+    <span class="tag">Java</span>
+    <span class="tag">Paper API</span>
+    <span class="tag">Folia</span>
+    <span class="tag">Spigot / Bukkit</span>
+    <span class="tag">Adventure API</span>
+    <span class="tag">Maven</span>
+    <span class="tag">Git / GitHub</span>
+    <span class="tag">IntelliJ IDEA</span>
+    <span class="tag">Plugin Architecture</span>
+    <span class="tag">Event-Driven Design</span>
+    <span class="tag">Scheduler Abstraction</span>
+    <span class="tag">JitPack</span>
+  </div>
+</section>
 
-    <footer class="footer">
+<div class="section-divider"></div>
+
+<!-- Projects -->
+<section class="projects-section" id="projects">
+  <div class="section-header">
+    <h2 class="section-title font-display">Projects</h2>
+    <a href="https://github.com/blackscorpyon04" target="_blank" rel="noopener" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.8rem;">All on GitHub ↗</a>
+  </div>
+
+  <!-- Flagship -->
+  <a href="https://dev.bukkit.org/projects/simple-player-tracker" target="_blank" rel="noopener" style="display:block;">
+    <div class="featured-card">
+      <div class="featured-card-body">
         <div>
-            <div>
-                <h1>Scorp</h1>
-                <p>Copyright &copy; 2022</p>
-            </div>
+          <span class="featured-badge">Flagship Plugin</span>
+          <div style="height: 0.75rem;"></div>
+          <h3 class="featured-title font-display">Simple Player Tracker</h3>
+          <div style="height: 0.6rem;"></div>
+          <p class="featured-desc">
+            Compass-based player tracking for PvP servers. Players right-click a compass to open a GUI, select a target, and track them in real time across the world. Supports Paper 26.2 and Folia regional threading.
+          </p>
         </div>
-    </footer>
-</body>
+        <div>
+          <div class="download-stat">
+            38,000+
+            <span class="download-stat-label">downloads on CurseForge / Bukkit</span>
+          </div>
+          <div style="height: 0.75rem;"></div>
+          <div class="card-footer">
+            <span class="tag">Paper 26.2</span>
+            <span class="tag">Folia</span>
+            <span class="tag">Adventure API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
 
-</html>
+  <!-- Grid -->
+  <div class="project-grid">
+
+    <a href="https://github.com/blackscorpyon04/RandomEventsEngine" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">⚡</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">Random Events Engine</h3>
+        </div>
+        <p class="project-desc">A modular framework for triggering random server-wide events. Designed with a clean API for easy extensibility — other plugins can register custom events without touching the core.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Paper</span>
+          <span class="tag">Folia</span>
+          <span class="tag">Plugin API</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://github.com/blackscorpyon04/HTTPOnDamage" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">🔗</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">HTTPOnDamage</h3>
+        </div>
+        <p class="project-desc">Fires a configurable HTTP webhook when a specific named player takes damage. Useful for integrating Minecraft events into external systems — alerts, dashboards, stream overlays.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Webhooks</span>
+          <span class="tag">Automation</span>
+          <span class="tag">Paper</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://dev.bukkit.org/projects/potionattack" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">🧪</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">Potion Attack</h3>
+        </div>
+        <p class="project-desc">Attach potion effects to weapons and armour via config. Players wearing or wielding configured items gain or inflict effects on hit — adds depth to PvP without complex crafting.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Spigot</span>
+          <span class="tag">PvP</span>
+          <span class="tag">Config-Driven</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://dev.bukkit.org/projects/blockcannon" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">💥</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">Block Cannon</h3>
+        </div>
+        <p class="project-desc">A handheld item that launches blocks as projectiles. Configurable block type, speed, and explosion radius. A popular plugin for mini-game and factions server owners.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Spigot</span>
+          <span class="tag">Mini-Games</span>
+          <span class="tag">Projectiles</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://dev.bukkit.org/projects/simple-healing" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">💊</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">Simple Healing</h3>
+        </div>
+        <p class="project-desc">Custom healing items with configurable cooldowns, heal amounts, and effects. Lightweight and drop-in ready for survival or RPG servers.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Spigot</span>
+          <span class="tag">RPG</span>
+          <span class="tag">Items</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="https://github.com/blackscorpyon04" target="_blank" rel="noopener" style="display:contents;">
+      <div class="project-card">
+        <div class="project-card-header">
+          <div class="project-icon">📦</div>
+          <span class="project-link-icon">↗</span>
+        </div>
+        <div>
+          <h3 class="project-title font-display">Planks from Logs</h3>
+        </div>
+        <p class="project-desc">Simple quality-of-life plugin: logs drop planks when broken, eliminating the crafting step. Lightweight, zero dependencies, instant drop-in.</p>
+        <div class="tags" style="margin-top: auto;">
+          <span class="tag">Spigot</span>
+          <span class="tag">QoL</span>
+          <span class="tag">Lightweight</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- About -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div>
+      <p class="about-label">About</p>
+      <h2 class="about-heading font-display">Jordan.<br>Based in Victoria,<br>Australia.</h2>
+      <div style="height: 1.5rem;"></div>
+      <div class="about-details">
+        <div class="about-detail">
+          <span class="icon">📍</span>
+          Victoria, Australia
+        </div>
+        <div class="about-detail">
+          <span class="icon">💼</span>
+          Available for commissions
+        </div>
+      </div>
+    </div>
+    <div class="about-text">
+      <p>
+        I got into plugin development because it sounded fun — and it was. I've been self-taught from the start, picking it up on and off over the past 7 years, building things that interested me and learning as I went.
+      </p>
+      <p>
+        My flagship plugin, Simple Player Tracker, has crossed 38,000 downloads. It started as a simple idea and has been updated through multiple major API versions — most recently migrated to Paper's Adventure API with full Folia support for regional threading.
+      </p>
+      <p>
+        I'm comfortable across the full plugin lifecycle: architecture, event-driven design, GUI inventory UIs, config systems, scheduler abstraction for Folia compatibility, and JitPack distribution. I keep up with the ecosystem as it moves — Paper switched from <code style="font-size:0.85em; color: var(--accent);">1.x</code> to year-based versioning in 2026 and I had updates out quickly.
+      </p>
+      <p>
+        Open to commissions — new plugins, updates to existing ones, Folia migrations, or custom features for your server.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <span class="footer-brand font-display">Scorp<span>.</span></span>
+  <span class="footer-copy">© 2026 Jordan Mason</span>
+  <div class="footer-links">
+    <a href="https://github.com/blackscorpyon04" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://dev.bukkit.org/members/blackscorpyon04/projects" target="_blank" rel="noopener">CurseForge</a>
+  </div>
+</footer>
+
+</body></html>
